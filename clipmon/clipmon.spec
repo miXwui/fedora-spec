@@ -1,16 +1,17 @@
 %global commit ed0d771a0995c599f083c5b56091331edee71e83
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global debug_package %{nil}
 
 Name:           clipmon
 Version:        0.1.0
 Release:        0%{?dist}
-Summary:        https://git.sr.ht/whynothugo/%{name}
+Summary:        https://git.sr.ht/~whynothugo/%{name}
 License:        ISC
 URL:            https://git.sr.ht/~whynothugo/%{name}
-Source0:         https://github.com/miXwui/fedora-spec/clipmon/clipmon/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+# https://git.sr.ht/~whynothugo/clipmon/archive/%{commit}.tar.gz
+Source0:        ${name}-%{commit}.tar.gz
 Patch0:         remove-superfluous-logging.patch
-BuildRequires:  git
+BuildRequires:  rust
+BuildRequires:  cargo
 
 %description
 `clipmon`, or **clip**board **mon**itor is a wayland helper that:
@@ -29,15 +30,15 @@ the underlying Wayland protocol, it's necessary to implement a clipboard
 monitor to achieve this.
 
 %prep
-%setup -n %{name}-%{branch}
+%setup -n %{name}-%{commit}
 %patch0 -p1
 
 %build
 cargo build --release
 
 %install
-install -Dm755 %{_builddir}/%{name}-%{branch}/target/release/%{name} %{buildroot}%{_exec_prefix}/lib/%{name}
-install -Dm644 %{_builddir}/%{name}-%{branch}/%{name}.service %{buildroot}%{_exec_prefix}/lib/systemd/user/%{name}.service
+install -Dm755 %{_builddir}/%{name}-%{commit}/target/release/%{name} %{buildroot}%{_exec_prefix}/lib/%{name}
+install -Dm644 %{_builddir}/%{name}-%{commit}/%{name}.service %{buildroot}%{_exec_prefix}/lib/systemd/user/%{name}.service
 
 %files
 %{_exec_prefix}/lib/%{name}
