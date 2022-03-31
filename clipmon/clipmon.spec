@@ -7,8 +7,8 @@ Release:        0%{?dist}
 Summary:        https://git.sr.ht/~whynothugo/%{name}
 License:        ISC
 URL:            https://git.sr.ht/~whynothugo/%{name}
-# https://git.sr.ht/~whynothugo/clipmon/archive/%{commit}.tar.gz
-Source0:        ${name}-%{commit}.tar.gz
+# https://git.sr.ht/~whynothugo/clipmon/archive/%%{commit}.tar.gz
+Source0:        %{name}-%{commit}.tar.gz
 Patch0:         remove-superfluous-logging.patch
 BuildRequires:  rust
 BuildRequires:  cargo

@@ -27,10 +27,10 @@ index 13bd97c..9161c35 100644
  fn main() {
 
 diff --git a/src/pipe.rs b/src/pipe.rs
-index c456173..a9371d6 100644
+index c456173..c3a2cdb 100644
 --- a/src/pipe.rs
 +++ b/src/pipe.rs
-@@ -50,11 +50,12 @@ fn handle_source_event(
+@@ -50,10 +50,11 @@ fn handle_source_event(
              let selection_data = match inner.get(&mime_type) {
                  Some(data) => data,
                  None => {
@@ -38,16 +38,14 @@ index c456173..a9371d6 100644
 -                        "Client requested unavailable mime_type: {:?},{:?}!",
 -                        selection, mime_type
 -                    );
--                    return;
 +                    // Commenting out the below print so journal doesn't get flooded.
 +                    // eprintln!(
 +                    //     "Client requested unavailable mime_type: {:?},{:?}!",
 +                    //     selection, mime_type
 +                    // );
-+                    // return;
+                     return;
                  }
              };
- 
 @@ -62,11 +63,13 @@ fn handle_source_event(
              loop_data.notification.ping();
  
@@ -57,7 +55,7 @@ index c456173..a9371d6 100644
 -                    main.as_ref().id(),
 -                    bytes
 -                ),
-+                Ok(bytes) => ()
++                Ok(bytes) => {}
 +                // Commenting out the below print so journal doesn't get flooded.
 +                // println!(
 +                //     "zwlr_data_control_source_v1@{:?} - Sent {} bytes.",
