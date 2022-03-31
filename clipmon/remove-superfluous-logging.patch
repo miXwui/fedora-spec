@@ -1,0 +1,121 @@
+Subject: Commenting out println so journal doesn't get flooded.
+Author: Michael Wu <me@miXwui.com>
+
+diff --git a/src/main.rs b/src/main.rs
+index 13bd97c..9161c35 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -197,7 +197,8 @@ fn handle_selection_taken(
+     if loop_data.is_selection_ours(selection) {
+         // This is just the compositor notifying us of an event we created;
+         // We can ignore it since we already own this selection.
+-        println!("We already own {:?}, escaping.", selection);
++        // Commenting out the below print so journal doesn't get flooded.
++        // println!("We already own {:?}, escaping.", selection);
+         return;
+     }
+ 
+@@ -253,7 +254,8 @@ fn handle_data_device_events(
+ }
+ 
+ fn handle_notification_event(_: (), _: &mut (), _loop_data: &mut LoopData) -> () {
+-    println!("TODO: should show a notification indicating a client has read the clipboard.");
++    // Commenting out the below print so journal doesn't get flooded.
++    // println!("TODO: should show a notification indicating a client has read the clipboard.");
+ }
+ 
+ fn main() {
+
+diff --git a/src/pipe.rs b/src/pipe.rs
+index c456173..a9371d6 100644
+--- a/src/pipe.rs
++++ b/src/pipe.rs
+@@ -50,11 +50,12 @@ fn handle_source_event(
+             let selection_data = match inner.get(&mime_type) {
+                 Some(data) => data,
+                 None => {
+-                    eprintln!(
+-                        "Client requested unavailable mime_type: {:?},{:?}!",
+-                        selection, mime_type
+-                    );
+-                    return;
++                    // Commenting out the below print so journal doesn't get flooded.
++                    // eprintln!(
++                    //     "Client requested unavailable mime_type: {:?},{:?}!",
++                    //     selection, mime_type
++                    // );
++                    // return;
+                 }
+             };
+ 
+@@ -62,11 +63,13 @@ fn handle_source_event(
+             loop_data.notification.ping();
+ 
+             match file.write(&selection_data.data.borrow()) {
+-                Ok(bytes) => println!(
+-                    "zwlr_data_control_source_v1@{:?} - Sent {} bytes.",
+-                    main.as_ref().id(),
+-                    bytes
+-                ),
++                Ok(bytes) => ()
++                // Commenting out the below print so journal doesn't get flooded.
++                // println!(
++                //     "zwlr_data_control_source_v1@{:?} - Sent {} bytes.",
++                //     main.as_ref().id(),
++                //     bytes
++                // ),
+                 Err(err) => println!("Error sending selection: {:?}", err),
+             };
+         }
+@@ -124,10 +127,11 @@ fn handle_pipe_event(
+             break;
+         }
+ 
+-        println!(
+-            "zwlr_data_control_offer_v1@{:?} - Read {}, {:?} bytes.",
+-            data_offer_id, mime_type, len
+-        );
++        // Commenting out the below line so journal doesn't get flooded.
++        // println!(
++        //     "zwlr_data_control_offer_v1@{:?} - Read {}, {:?} bytes.",
++        //     data_offer_id, mime_type, len
++        // );
+ 
+         selection_data
+             .data
+@@ -135,12 +139,13 @@ fn handle_pipe_event(
+             .extend_from_slice(&buf[0..len]);
+     }
+ 
+-    println!(
+-        "zwlr_data_control_offer_v1@{:?} - Finished reading {}, total {:?} bytes.",
+-        data_offer_id,
+-        mime_type,
+-        selection_data.data.borrow().len()
+-    );
++    // Commenting out the below line so journal doesn't get flooded.
++    // println!(
++    //     "zwlr_data_control_offer_v1@{:?} - Finished reading {}, total {:?} bytes.",
++    //     data_offer_id,
++    //     mime_type,
++    //     selection_data.data.borrow().len()
++    // );
+ 
+     selection_data.is_complete.replace(true);
+ 
+@@ -153,10 +158,11 @@ fn handle_pipe_event(
+         if loop_data.is_selection_owned_by_client(*selection, data_offer_id) {
+             create_data_source(loop_data, mime_types, selection);
+         } else {
+-            println!(
+-                "{:?} - No longer owns {:?} selection, bailing",
+-                data_offer_id, selection
+-            );
++            // Commenting out the below line so journal doesn't get flooded.
++            // println!(
++            //     "{:?} - No longer owns {:?} selection, bailing",
++            //     data_offer_id, selection
++            // );
+         }
+     }
+ 

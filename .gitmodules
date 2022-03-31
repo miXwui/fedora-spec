@@ -1,0 +1,3 @@
+[submodule "clipmon/clipmon"]
+	path = clipmon/clipmon
+	url = https://git.sr.ht/~whynothugo/clipmon
