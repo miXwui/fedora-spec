@@ -34,7 +34,6 @@ This package contains the documentation for %{name}.
 
 %prep
 %autosetup
-%patch0 -p1
 
 %build
 %meson -Dgtk_doc=true
