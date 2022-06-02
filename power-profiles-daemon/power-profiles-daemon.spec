@@ -6,7 +6,7 @@ Summary:        Makes power profiles handling available over D-Bus
 License:        GPLv3+
 URL:            https://gitlab.freedesktop.org/hadess/power-profiles-daemon
 Source0:        https://gitlab.freedesktop.org/hadess/power-profiles-daemon/uploads/f81e7fa231b3cb45dba87c85375aeaa2/power-profiles-daemon-0.11.1.tar.xz
-Patch0:         add-balance-power-profile.patch
+Patch0:         replace_performance_with_balance_performance_and_balanced_with_balance_power.patch
 
 BuildRequires:  meson
 BuildRequires:  gcc
@@ -33,7 +33,7 @@ BuildArch:      noarch
 This package contains the documentation for %{name}.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
 %meson -Dgtk_doc=true

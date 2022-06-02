@@ -1,0 +1,50 @@
+Subject: Replace performance with balance_performance and balanced with balance_power.
+Author: Michael Wu <me@miXwui.com>
+
+diff --git a/src/ppd-driver-intel-pstate.c b/src/ppd-driver-intel-pstate.c
+index 5939d77..5049b8c 100644
+--- a/src/ppd-driver-intel-pstate.c
++++ b/src/ppd-driver-intel-pstate.c
+@@ -207,9 +207,9 @@ profile_to_pref (PpdProfile profile)
+   case PPD_PROFILE_POWER_SAVER:
+     return "power";
+   case PPD_PROFILE_BALANCED:
+-    return "balance_performance";
++    return "balance_power";
+   case PPD_PROFILE_PERFORMANCE:
+-    return "performance";
++    return "balance_performance";
+   }
+ 
+   g_assert_not_reached ();
+diff --git a/tests/integration-test.py b/tests/integration-test.py
+index 2dd3677..2fa1cfc 100755
+--- a/tests/integration-test.py
++++ b/tests/integration-test.py
+@@ -395,7 +395,7 @@ class Tests(dbusmock.DBusTestCase):
+       contents = None
+       with open(os.path.join(dir2, "energy_performance_preference"), 'rb') as f:
+         contents = f.read()
+-      self.assertEqual(contents, b'balance_performance')
++      self.assertEqual(contents, b'balance_power')
+ 
+       # Set performance mode
+       self.set_dbus_property('ActiveProfile', GLib.Variant.new_string('performance'))
+@@ -404,7 +404,7 @@ class Tests(dbusmock.DBusTestCase):
+       contents = None
+       with open(os.path.join(dir2, "energy_performance_preference"), 'rb') as f:
+         contents = f.read()
+-      self.assertEqual(contents, b'performance')
++      self.assertEqual(contents, b'balance_performance')
+ 
+       # Disable turbo
+       with open(os.path.join(pstate_dir, "no_turbo"),'w') as no_turbo:
+@@ -458,7 +458,7 @@ class Tests(dbusmock.DBusTestCase):
+       with open(os.path.join(dir1, "energy_performance_preference"), 'rb') as f:
+         contents = f.read()
+       # This matches what's written by ppd-driver-intel-pstate.c
+-      self.assertEqual(contents, b'balance_performance')
++      self.assertEqual(contents, b'balance_power')
+ 
+       self.stop_daemon()
+ 
